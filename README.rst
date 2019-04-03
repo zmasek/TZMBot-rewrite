@@ -23,3 +23,6 @@ if needed:
 docker stop tzmbot && docker rm tzmbot
 and then:
 docker run --name tzmbot tzmbot:0.0.1
+
+# rewrite on_command_error so it avoids the dict
+# add bugsnag

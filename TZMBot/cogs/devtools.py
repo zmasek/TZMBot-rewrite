@@ -5,7 +5,7 @@ import traceback
 import discord
 import io
 from discord.ext import commands
-from config import bot_config, user_config
+import settings
 
 
 class DevTools(commands.Cog, name="Developer-Only Commands"):
@@ -14,13 +14,13 @@ class DevTools(commands.Cog, name="Developer-Only Commands"):
         self.last_eval_result = None
 
     async def cog_check(self, ctx):
-        return ctx.author.id in user_config.DEV_IDS
+        return ctx.author.id in settings.DEV_IDS
 
     @commands.command(name="eval", help="evaluate python code, developer only")
     async def _eval(self, ctx, *, body: str):
         env = {
             "client": self.client,
-            "config": bot_config,
+            "config": settings,
             "ctx": ctx,
             "channel": ctx.channel,
             "author": ctx.author,

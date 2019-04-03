@@ -1,6 +1,6 @@
 from discord.ext import commands
 from importlib import reload
-from config import bot_config, user_config
+import settings
 
 
 class LoadUnloadReload(commands.Cog):
@@ -8,14 +8,14 @@ class LoadUnloadReload(commands.Cog):
         self.client = client
 
     def cog_check(self, ctx):
-        return ctx.author.id in user_config.DEV_IDS
+        return ctx.author.id in settings.DEV_IDS
 
     async def loading_behaviour(self, ctx, meth, ext, success_message):
         try:
             meth(ext)
         except (commands.ExtensionNotFound, commands.ExtensionNotLoaded):
             try:
-                meth(f"{bot_config.RELATIVE_COGS_DIR}.{ext}")
+                meth(f"cogs.{ext}")
             except (commands.ExtensionNotFound, commands.ExtensionNotLoaded):
                 return await ctx.send(
                     "The extension could not be found in either the current working directory or relative "

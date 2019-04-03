@@ -1,7 +1,8 @@
-import os
-
+import logging
+from settings import COGS
 import discord
-from config import PROJECT_DIR, RELATIVE_COGS_DIR
+
+logger = logging.getLogger("__main__")
 
 
 async def strikethrough(message: discord.Message, new_message: str = ""):
@@ -12,9 +13,10 @@ async def strikethrough(message: discord.Message, new_message: str = ""):
         pass
 
 
-def get_cogs():
-    return [
-        f"{RELATIVE_COGS_DIR}.{filename[:-3]}"
-        for filename in os.listdir(os.path.join(PROJECT_DIR, RELATIVE_COGS_DIR))
-        if filename.endswith(".py") and "__init__" not in filename
-    ]
+def load_cogs(client):
+    for cog in COGS:
+        try:
+            client.load_extension(cog)
+            logger.debug(f"-\tCog extension {cog} loaded successfully")
+        except Exception as e:
+            logger.error(f"-\tCog extension {cog} could not be loaded: {e}")

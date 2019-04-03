@@ -3,8 +3,8 @@ import traceback
 
 import asyncio
 import utils
-from config import user_config
 from discord.ext import commands
+import settings
 
 
 class GlobalListeners(commands.Cog):
@@ -39,7 +39,7 @@ class GlobalListeners(commands.Cog):
             report = "".join(
                 traceback.format_exception(type(err), err, err.__traceback__)
             )
-            await self.client.get_channel(user_config.ERROR_CHANNEL_ID).send(
+            await self.client.get_channel(settings.ERROR_CHANNEL_ID).send(
                 f"Exception raised in command {ctx.command} in cog {ctx.command.cog_name} "
                 f"by user {ctx.author}: ```py\n{report}\n```"
             )
@@ -52,7 +52,7 @@ class GlobalListeners(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, exc):
         if isinstance(exc, commands.CommandInvokeError):
-            if ctx.author.id in user_config.DEV_IDS:
+            if ctx.author.id in settings.DEV_IDS:
                 print(
                     f"Ignoring exception in command {ctx.command} in cog {ctx.command.cog_name}:",
                     file=sys.stderr,

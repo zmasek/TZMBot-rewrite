@@ -183,7 +183,7 @@ dmypy.json
 .pyre/
 
 
-# My shit:
+# Additional:
 debug.log
-user_config.py
 .idea
+profile
